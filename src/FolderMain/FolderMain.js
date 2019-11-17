@@ -1,12 +1,20 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import NotefulContext from '../NotefulContext'
 import './FolderMain.css'
 import moment from 'moment';
 
 class FolderMain extends React.Component{
+    static contextType = NotefulContext
+    static defaultProps = {
+        notes: [],
+    }
     render(){
-        console.log(this.props.notes)
-        const notes = this.props.notes.map(
+        // console.log(this.props.notes)
+        const folderNotes = this.context.notes.filter(note => 
+            note.folderId === this.props.match.params.folderId
+        )
+        const notes = folderNotes.map(
             (note, i) => {
                 const date = 
                 moment(new Date(note.modified)).format("Do MMM YYYY")
@@ -22,7 +30,7 @@ class FolderMain extends React.Component{
                     <p className='date' key={i}>
                         Date modified on {date}
                     </p>
-                    <button type='button'>Delete</button>
+                    <button type='button' onClick={() => this.context.deleteNoteOutside(note.id)}>Delete</button>
                 </div>
                 )
             }
@@ -30,7 +38,9 @@ class FolderMain extends React.Component{
         return(
             <div className="FolderMain">
                 {notes}
-                <button type="button">Add note</button>
+                <Link to={'/add-note'} className='add-note'>
+                <button type="button" onClick={() => this.context.updatePushLocation(this.props.location.pathname)}>Add note</button>
+                </Link>
             </div>
         )
     }

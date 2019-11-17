@@ -1,16 +1,21 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
+import NotefulContext from '../NotefulContext'
 import './FolderSide.css'
 
 class FolderSide extends React.Component{
+    static contextType = NotefulContext
+    static defaultProps = {
+        folders : []
+    }
     render(){
-        const buttons = this.props.folders.map(
+        const buttons = this.context.folders.map(
             (folder, i) => (
                 <NavLink
                     to={`/folder/${folder.id}`}
                     key={i} activeClassName='highlighted'>
                     <button type='button'>
-                        Folder {i + 1}
+                        {folder.name}
                     </button>
                 </NavLink>
             )
@@ -18,9 +23,12 @@ class FolderSide extends React.Component{
         return(
             <div className="FolderSide">
                 {buttons}
-                <button type="button">
-                    Add folder
-                </button>
+                <NavLink to={'/add-folder'}
+                    activeClassName='highlighted'>
+                        <button type="button">
+                            Add folder
+                        </button>
+                </NavLink>
             </div>
         )
     }

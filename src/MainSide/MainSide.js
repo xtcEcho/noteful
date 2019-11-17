@@ -1,16 +1,21 @@
 import React, { Component } from 'react'
-import {Link} from 'react-router-dom'
+import {Link, NavLink} from 'react-router-dom'
+import NotefulContext from '../NotefulContext'
 import './MainSide.css'
 
 class MainSide extends Component{
+    static contextType = NotefulContext
+    static defaultProps = {
+        folders : [],
+    }
     render(){
-        const buttons = this.props.folders.map(
+        const buttons = this.context.folders.map(
             (folder, i) => (
                 <Link
                     to={`/folder/${folder.id}`}
                     key={i}>
                     <button type='button'>
-                        Folder {i+1}
+                        {folder.name}
                     </button>
                 </Link>
             )
@@ -19,9 +24,12 @@ class MainSide extends Component{
         return(
             <div className="MainSide">
                 {buttons}
-                <button type="button">
-                    Add folder
-                </button>
+                <NavLink to='/add-folder'
+                    activeClassName='highlighted'>
+                    <button type="button">
+                        Add folder
+                    </button>
+                </NavLink>
             </div>
             
         )
