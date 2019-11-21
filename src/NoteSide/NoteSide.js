@@ -13,7 +13,7 @@ class NoteSide extends React.Component{
                     let folderName
                     context.folders.find((folder, i) =>{
                         if (folder.id ===note.folderId){
-                            folderName = `Folder ${i + 1}`
+                            folderName = folder.name
                         }
                     })
                     return(
