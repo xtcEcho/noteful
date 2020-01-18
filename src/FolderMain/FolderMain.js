@@ -10,10 +10,11 @@ class FolderMain extends React.Component{
         notes: [],
     }
     render(){
-        // console.log(this.props.notes)
+        // console.log(this.context.notes)
         const folderNotes = this.context.notes.filter(note => 
-            note.folderId === this.props.match.params.folderId
+            note.folderid == this.props.match.params.folderId
         )
+        // console.log(folderNotes)
         const notes = folderNotes.map(
             (note, i) => {
                 const date = 

@@ -8,11 +8,15 @@ class NoteSide extends React.Component{
         return(
             <NotefulContext.Consumer>
                 {(context) => {
-                    const note = context.notes.find(note => 
-                        note.id === this.props.match.params.noteId)
+                    console.log(context.notes)
+                    // console.log(this.props.match.params.noteId)
+                    const note = context.notes.find(n => 
+
+                        n.id == this.props.match.params.noteId)
+                    // console.log(note)    
                     let folderName
                     context.folders.find((folder, i) =>{
-                        if (folder.id ===note.folderId){
+                        if (folder.id == note.folderid){
                             folderName = folder.name
                         }
                     })

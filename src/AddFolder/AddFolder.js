@@ -39,7 +39,7 @@ class AddFolder extends React.Component{
         const folder = {
             name: folderName.value
         }
-        fetch(config.FOLDER_ENDPOINT, {
+        fetch(config.API_FOLDER_ENDPOINT, {
             method:"POST",
             body: JSON.stringify(folder),
             headers:{
@@ -47,14 +47,12 @@ class AddFolder extends React.Component{
                 }
             })
             .then(res => {
-                if (!res.ok){
-                    throw new Error(res.status)
-                }
                 return res.json()
-            }).then(data =>
-                {
-                    this.props.history.push(`/folder/${data.id}`)
-                    this.context.addFolder(data)
+            })
+            .then(dataJson =>
+                {   
+                    this.context.fetchAllFolders()
+                    this.props.history.push(`/folder/${dataJson.id}`)
                 }
                 
             ).catch(error => console.log(error))

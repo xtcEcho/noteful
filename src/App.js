@@ -63,8 +63,8 @@ class App extends Component {
   }
 
   deleteNoteOutside = noteId =>{
-    console.log(`${config.NOTE_ENDPOINT}/${noteId}`)
-    fetch(`${config.NOTE_ENDPOINT}/${noteId}`, {
+    // console.log(`${config.NOTE_ENDPOINT}/${noteId}`)
+    fetch(`${config.API_NOTE_ENDPOINT}/${noteId}`, {
       method: 'DELETE',
       headers:{
         'content-type': 'application/json',
@@ -75,28 +75,18 @@ class App extends Component {
         throw new Error(res.status)
       }
       return res.json()
-    }).then(data =>{
-      const newNotes = this.state.notes.filter(
-        note => (note.id !== noteId)
-      )
-      this.setState({
-        notes: newNotes,
-      })
     }).catch(error => this.setState({error}))
-  }
-
-  deleteNoteInside = noteId => {
-    const newNotes = this.state.notes.filter(
-      note => (note.id !== noteId)
-    )
-    this.setState({
-      notes: newNotes,
+    .then(() => {
+      this.fetchAllNotes()
     })
   }
 
-  componentDidMount(){
-    //fetch folders
-    fetch(config.FOLDER_ENDPOINT,{
+  deleteNoteInside = () => {
+    this.fetchAllNotes()
+  }
+
+  fetchAllFolders = () => {
+    fetch(config.API_FOLDER_ENDPOINT,{
       method: 'GET',
       headers: {
         'content-type': 'application/json',
@@ -110,24 +100,26 @@ class App extends Component {
       this.setFolders(resJson)
     )
     .catch(folderError => this.setState({folderError}))
-
-      //fetch notes
-      fetch(config.NOTE_ENDPOINT, {
-        method: 'GET',
-        headers: {
-          'content-type': 'application/json',
-        }
-      }).then(res => {
-        if (!res.ok){
-          throw new Error(res.status)
-        }
-        return res.json()
-      }).then(resJson => 
-        this.setNotes(resJson)
-      )
-      .catch(noteError => this.setState({noteError}))
-      
-
+  }
+  fetchAllNotes = () => {
+    fetch(config.API_NOTE_ENDPOINT, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      }
+    }).then(res => {
+      if (!res.ok){
+        throw new Error(res.status)
+      }
+      return res.json()
+    }).then(resJson => 
+      this.setNotes(resJson)
+    )
+    .catch(noteError => this.setState({noteError}))
+  }
+  componentDidMount(){
+    this.fetchAllFolders()
+    this.fetchAllNotes()
   }
 
   render(){
@@ -141,6 +133,8 @@ class App extends Component {
       addFolder: this.addFolder,
       addNote: this.addNote,
       updatePushLocation: this.updatePushLocation,
+      fetchAllFolders: this.fetchAllFolders,
+      fetchAllNotes: this.fetchAllNotes,
     }
     return(
       <div className="App">

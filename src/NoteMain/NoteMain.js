@@ -7,31 +7,30 @@ import config from '../config'
 class NoteMain extends React.Component{
     static contextType = NotefulContext
     static defaultProps = {
-        notes:[]
+        notes: [],
     }
     deleteNote = (noteId, callback) =>{
-        fetch(`${config.NOTE_ENDPOINT}/${noteId}`, {
+        fetch(`${config.API_NOTE_ENDPOINT}/${noteId}`, {
             method:'DELETE',
             headers: {
                 'content-type': 'application/json',
             }
         })
-        .then(res => {
-            if (!res.ok){
-                throw new Error(res.status)
-            }
-            return res.json()
-        }).then(data =>{
+        .then(data =>{
+            callback()
             this.props.history.push('/')
-            callback(noteId)
+            
         }).catch(error =>{
             console.log(error)
         })
     }
     render(){
-        const note = this.context.notes.find(note =>
-            note.id === this.props.match.params.noteId
+        console.log(this.context.notes)
+        // const note_id = this.props.match.params.noteId
+        const note = this.context.notes.find(n =>
+            n.id == this.props.match.params.noteId
           )
+        // console.log(note)
         const {name, modified, content} = note
         const date = 
                 moment(new Date(modified)).format("Do MMM YYYY")

@@ -1,4 +1,4 @@
 export default{
-    FOLDER_ENDPOINT:'http://localhost:9090/folders',
-    NOTE_ENDPOINT:'http://localhost:9090/notes',
+    API_FOLDER_ENDPOINT: `https://protected-plateau-29148.herokuapp.com/${folder}`,
+    API_NOTE_ENDPOINT: `https://protected-plateau-29148.herokuapp.com/${note}`
 }

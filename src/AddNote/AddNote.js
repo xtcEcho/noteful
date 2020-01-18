@@ -39,11 +39,11 @@ class AddNote extends React.Component{
         let time = new Date()
         const note = {
             name: noteName.value,
-            folderId: selectFolder.value,
+            folderid: selectFolder.value,
             content: content.value,
             modified: time.toISOString(),
         }
-        fetch(config.NOTE_ENDPOINT, {
+        fetch(config.API_NOTE_ENDPOINT, {
             method:"POST",
             body: JSON.stringify(note),
             headers:{
@@ -51,14 +51,14 @@ class AddNote extends React.Component{
                 }
             })
             .then(res => {
-                if (!res.ok){
-                    throw new Error(res.status)
-                }
+                // if (!res.ok){
+                //     throw new Error(res.status)
+                // }
                 return res.json()
             }).then(data =>
                 {
-                    this.props.history.push(this.context.folderLocation)
-                    this.context.addNote(data)
+                    this.context.fetchAllNotes()
+                    this.props.history.push(`/folder/${data.folderid}`)
                 }
                 
             ).catch(error => console.log(error))
